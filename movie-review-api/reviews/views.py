@@ -24,7 +24,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
 
     def get_serializer_class(self):
-        if self.action in ['list', 'my']:  
+        # 👈 'best' 액션일 때도 목록용 시리얼라이저(ReviewListSerializer)를 쓰도록 추가합니다.
+        if self.action in ['list', 'my', 'best']:  
             return ReviewListSerializer
         return ReviewDetailSerializer
 
@@ -47,5 +48,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
             
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def best(self, request):
+        """좋아요 많은 순으로 인기 리뷰 TOP 5 (로그인 불필요)"""
+        queryset = self.get_queryset().order_by('-like_count')[:5]
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
