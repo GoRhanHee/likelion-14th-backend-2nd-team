@@ -9,7 +9,11 @@ class ReviewListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id', 'user_nickname', 'movie', 'movie_title', 'title', 'rating', 'like_count', 'comment_count', 'created_at']
+        fields = [
+            'id', 'user_nickname', 'movie', 'movie_title', 'title', 'rating', 
+            'story_rating', 'directing_rating', 'visual_rating', # 추가
+            'like_count', 'comment_count', 'created_at'
+        ]
 
 class ReviewDetailSerializer(serializers.ModelSerializer):
     user_nickname = serializers.CharField(source='user.nickname', read_only=True)
@@ -19,7 +23,12 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id', 'user', 'user_nickname', 'movie', 'movie_title', 'title', 'content', 'rating', 'like_count', 'comment_count', 'created_at', 'updated_at']
+        fields = [
+            'id', 'user', 'user_nickname', 'movie', 'movie_title', 
+            'title', 'content', 'rating', 
+            'story_rating', 'directing_rating', 'visual_rating', # 추가
+            'like_count', 'comment_count', 'created_at', 'updated_at'
+        ]
         read_only_fields = ['user', 'created_at', 'updated_at']
 
     def validate(self, attrs):

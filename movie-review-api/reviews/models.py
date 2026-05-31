@@ -10,6 +10,9 @@ class Review(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    story_rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    directing_rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    visual_rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
 
     class Meta:
         ordering = ['-created_at']
