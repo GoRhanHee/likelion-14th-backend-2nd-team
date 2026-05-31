@@ -7,11 +7,15 @@ class ReviewListSerializer(serializers.ModelSerializer):
     like_count = serializers.IntegerField(read_only=True)
     comment_count = serializers.IntegerField(read_only=True)
 
+    movie_tag_display = serializers.CharField(source='get_movie_tag_display', read_only=True)
+    
     class Meta:
         model = Review
+
         fields = [
             'id', 'user_nickname', 'movie', 'movie_title', 'title', 'rating', 
-            'story_rating', 'directing_rating', 'visual_rating', # 추가
+            'story_rating', 'directing_rating', 'visual_rating', 
+            'movie_tag', 'movie_tag_display',  
             'like_count', 'comment_count', 'created_at'
         ]
 
@@ -21,12 +25,16 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     like_count = serializers.IntegerField(source='likes.count', read_only=True)
     comment_count = serializers.IntegerField(source='comments.count', read_only=True)
 
+    movie_tag_display = serializers.CharField(source='get_movie_tag_display', read_only=True)
+
     class Meta:
         model = Review
+
         fields = [
             'id', 'user', 'user_nickname', 'movie', 'movie_title', 
             'title', 'content', 'rating', 
-            'story_rating', 'directing_rating', 'visual_rating', # 추가
+            'story_rating', 'directing_rating', 'visual_rating', 
+            'movie_tag', 'movie_tag_display',  
             'like_count', 'comment_count', 'created_at', 'updated_at'
         ]
         read_only_fields = ['user', 'created_at', 'updated_at']
