@@ -7,6 +7,11 @@ from .models import Review
 from .serializers import ReviewListSerializer, ReviewDetailSerializer
 from .permissions import IsOwnerOrReadOnly
 
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .forms import ReviewForm
+from movies.models import Movie
+
 class ReviewViewSet(viewsets.ModelViewSet):
     """
     영화 리뷰 CRUD API
@@ -57,3 +62,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().order_by('-like_count')[:5]
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+@login_required
+def review_create(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.movie = movie
+            review.user = request.user
+            review.save()
+    return redirect('movie_detail', pk=movie_id)    

@@ -5,6 +5,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Avg, Count
 from .models import Movie
 from .serializers import MovieListSerializer, MovieDetailSerializer
+from django.views.generic import ListView, DetailView
+from reviews.forms import ReviewForm
 
 class MovieViewSet(viewsets.ModelViewSet):
     """
@@ -47,3 +49,18 @@ class MovieViewSet(viewsets.ModelViewSet):
         movies = self.get_queryset().order_by('-review_count')[:10]
         serializer = MovieListSerializer(movies, many=True)
         return Response(serializer.data)
+
+class MovieListView(ListView):
+    model = Movie
+    template_name = 'movies/index.html'
+    context_object_name = 'movies'
+
+class MovieDetailView(DetailView):
+    model = Movie
+    template_name = 'movies/detail.html'
+    context_object_name = 'movie'  
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ReviewForm() # 👈 템플릿에 폼 전달
+        return context

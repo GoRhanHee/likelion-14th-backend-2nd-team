@@ -166,9 +166,6 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
-# ============================================================
-# 커스텀 User 모델 (★ 마이그레이션 전에 반드시 설정!)
-# ============================================================
 AUTH_USER_MODEL = 'users.User'
 
 if DEBUG:
@@ -176,3 +173,6 @@ if DEBUG:
     # 툴바 미들웨어는 기존 미들웨어 리스트에 추가합니다.
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
     INTERNAL_IPS = ['127.0.0.1']
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

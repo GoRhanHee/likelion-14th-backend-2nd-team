@@ -17,19 +17,15 @@ class Review(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     story_rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
     directing_rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
     visual_rating = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
-
     movie_tag = models.CharField(max_length=20, choices=TAG_CHOICES, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
-        unique_together = ('user', 'movie')
 
     def __str__(self):
         return f"{self.user.nickname} - {self.movie.title}"
